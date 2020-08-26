@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import msngr_server.msngr_server.domain.User;
+import msngr_server.msngr_server.dto.UserDto;
 import msngr_server.msngr_server.service.UserService;
 
 @RestController
@@ -26,23 +27,26 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getUsers() {
+    public List<UserDto> getUsers() {
         return service.getUsers();
     }
 
     @GetMapping("{name}")
-    public User getUser(@PathVariable(name = "name") String name) {
+    public ResponseEntity<UserDto> getUser(@PathVariable(name = "name") String name) {
         return service.getUser(name);
     }
 
     @GetMapping("{name}/{password}")
-    public ResponseEntity<User> verifyPassword(@PathVariable(name = "name") String name, @PathVariable(name = "password") String password) {
+    public ResponseEntity<UserDto> verifyPassword(  @PathVariable(name = "name") String name,
+                                                    @PathVariable(name = "password") String password) {
         return service.verifyPassword(name, password);
     }
-/*
-    @PostMapping("{name}/{password}")
-    public ResponseEntity<User> registration(   @PathVariable(name = "name") String name,
-                                                @PathVariable(name = "password") String password) {
-        return service.registration(name, password);
-    }*/
+    
+    @PostMapping("{name}/{password}/{gender}/{email}")
+    public ResponseEntity<UserDto> registration(@PathVariable(name = "name") String name,
+                                                @PathVariable(name = "password") String password,
+                                                @PathVariable(name = "gender") String gender,
+                                                @PathVariable(name = "email") String email) {
+        return service.registration(name, password, gender, email);
+    }
 }
